@@ -25,7 +25,8 @@ namespace the_chuck_wiseby.ViewModels
             }
         }
 
-        private ObservableCollection<string> Categories { get; set; }
+
+        public ObservableCollection<string> Categories { get; set; }
 
         private string selectedCategory;
 
@@ -66,15 +67,20 @@ namespace the_chuck_wiseby.ViewModels
             }            
         }
 
-        private void OnRandomCommand()
+        private void CategorySelected()
         {
-
+            OnCategoryCommand();
         }
 
-        private void OnSearchCommand()
+        private async void OnRandomCommand()
+        {
+            await App.Current.MainPage.Navigation.PushAsync(new JokeResultView());
+        }
+
+        private async void OnSearchCommand()
         {
             MessagingCenter.Send<MainViewModel>(this, "SearchTerm");
-            App.Current.MainPage.Navigation.PushAsync(new SearchView());
+            await App.Current.MainPage.Navigation.PushAsync(new SearchView());
         }
 
         private void OnCategoryCommand()

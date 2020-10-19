@@ -13,5 +13,7 @@ namespace the_chuck_wiseby.Views
         {
             base.OnAppearing();
         }
+
+        
     }
 }

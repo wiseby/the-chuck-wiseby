@@ -1,10 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using the_chuck_wiseby.Models;
+using the_chuck_wiseby.Services;
 
 namespace the_chuck_wiseby.ViewModels
 {
-    class JokeResultViewModel
-{
-}
+    public class JokeResultViewModel
+    {
+        private IHttpService<ChuckJoke> httpService;
+        public JokeResultViewModel(IHttpService<ChuckJoke> httpService)
+        {
+            this.httpService = httpService;
+        }
+
+
+    }
 }

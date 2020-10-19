@@ -5,15 +5,22 @@
              utility:ViewModelLocator.AutoWireViewModel="True"
              x:Class="the_chuck_wiseby.Views.MainView">
 
-    <StackLayout>
+    <StackLayout Padding="20">
+        <Label Text="Get a Chuck Joke!!!"
+               HorizontalOptions="CenterAndExpand"
+               FontSize="40"
+               Padding="10"/>
+
         <Entry Placeholder="Search..."
                Text="{Binding SearchTerm}"/>
+        
         <Button Text="Search"
                 Command="{Binding SearchCommand}"/>
-        <Button Text="Random"
+        
+        <Button Text="Random Joke"
                 Command="{Binding RandomCommand}"/>
-        <ListView ItemsSource="{Binding Categories}"
-                  SelectedItem="{Binding SelectedItem}">
+
+        <ListView ItemsSource="{Binding Categories}">
         </ListView>
         
     </StackLayout>

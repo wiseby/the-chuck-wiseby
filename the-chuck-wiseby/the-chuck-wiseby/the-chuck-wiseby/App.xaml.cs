@@ -8,6 +8,7 @@ namespace the_chuck_wiseby
 {
     public partial class App : Application
     {
+        public readonly string baseUrl = "https://api.chucknorris.io/jokes/";
         public App()
         {
             InitializeComponent();
