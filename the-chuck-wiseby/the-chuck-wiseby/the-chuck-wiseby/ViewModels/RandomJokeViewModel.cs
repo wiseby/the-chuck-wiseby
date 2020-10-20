@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using the_chuck_wiseby.Models;
 using the_chuck_wiseby.Services;
+using the_chuck_wiseby.Views;
 using Xamarin.Forms;
 
 namespace the_chuck_wiseby.ViewModels
 {
-    class RandomJokeViewModel : BaseViewModel
+    public class RandomJokeViewModel : BaseViewModel
     {
         private IHttpService<ChuckJoke> httpService;
 
@@ -26,10 +24,27 @@ namespace the_chuck_wiseby.ViewModels
 
 
         public ICommand BackCommand { get; }
+        public ICommand NextJokeCommand { get; }
         public RandomJokeViewModel(IHttpService<ChuckJoke> httpService)
         {
             this.httpService = httpService;
             BackCommand = new Command(OnBackCommand);
+            NextJokeCommand = new Command(NextJoke);
+            InitializeMessageCenter();
+        }
+
+        public void InitializeMessageCenter()
+        {
+            MessagingCenter.Subscribe<RandomJokeView>(
+                this,
+                Messages.InitializeRandomView.ToString(),
+                (sender) => NextJoke()
+            );
+        }
+
+        private async void NextJoke()
+        {
+            Joke = await httpService.GetRandom();
         }
 
         private async void OnBackCommand()

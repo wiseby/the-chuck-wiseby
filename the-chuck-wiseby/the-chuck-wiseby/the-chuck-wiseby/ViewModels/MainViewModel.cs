@@ -61,7 +61,7 @@ namespace the_chuck_wiseby.ViewModels
             {
                 this.Categories = new ObservableCollection<string>(await this.httpService.GetCategories());
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
 
             }            
@@ -74,18 +74,19 @@ namespace the_chuck_wiseby.ViewModels
 
         private async void OnRandomCommand()
         {
-            await App.Current.MainPage.Navigation.PushAsync(new JokeResultView());
+            MessagingCenter.Send<MainViewModel>(this, Messages.RandomSelected.ToString());
+            await App.Current.MainPage.Navigation.PushAsync(new RandomJokeView());
         }
 
         private async void OnSearchCommand()
         {
-            MessagingCenter.Send<MainViewModel>(this, "SearchTerm");
+            MessagingCenter.Send<MainViewModel>(this, Messages.SearchSelected.ToString());
             await App.Current.MainPage.Navigation.PushAsync(new SearchView());
         }
 
         private void OnCategoryCommand()
         {
-            MessagingCenter.Send<MainViewModel>(this, "CategorySelected");
+            MessagingCenter.Send<MainViewModel>(this, Messages.CategorySelected.ToString());
             App.Current.MainPage.Navigation.PushAsync(new JokeResultView());
         }
 

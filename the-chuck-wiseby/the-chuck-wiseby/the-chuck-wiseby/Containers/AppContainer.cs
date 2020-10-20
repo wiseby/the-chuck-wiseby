@@ -19,6 +19,7 @@ namespace the_chuck_wiseby.Containers
             builder.RegisterType<MainViewModel>();
             builder.RegisterType<SearchViewModel>();
             builder.RegisterType<JokeResultViewModel>();
+            builder.RegisterType<RandomJokeViewModel>();
 
             // Services:
             builder.RegisterType<ChuckJokeService>().As<IHttpService<ChuckJoke>>();

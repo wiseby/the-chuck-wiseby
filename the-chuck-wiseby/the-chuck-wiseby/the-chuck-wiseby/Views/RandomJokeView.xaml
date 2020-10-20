@@ -1,13 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:utility="clr-namespace:the_chuck_wiseby.Utility;"
+             utility:ViewModelLocator.AutoWireViewModel="True"
              x:Class="the_chuck_wiseby.Views.RandomJokeView">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Random Joke"
+            <Label Text="Random Chuck Joke"
                    FontSize="40"
-                   HorizontalOptions="CenterAndExpand"/>
-            <Label Text="{Binding }"/>
+                   HorizontalOptions="CenterAndExpand"
+                   Padding="20"/>
+
+            <Label Text="{Binding Joke.Value}"
+                   HorizontalOptions="CenterAndExpand"
+                   FontSize="20"
+                   Padding="20"/>
+            
+            <Button Text="Another One Please!"
+                    Command="{Binding NextJokeCommand}" 
+                    HorizontalOptions="Center"
+                    Padding="20"
+                    Margin="20"/>
+            <Button Text="Go Back"
+                    Command="{Binding BackCommand}"
+                    HorizontalOptions="Center"
+                    Padding="20"
+                    Margin="20"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
