@@ -4,72 +4,71 @@ using the_chuck_wiseby.Models;
 using the_chuck_wiseby.Services;
 using the_chuck_wiseby.Views;
 using Xamarin.Forms;
+using Xamarin.Forms.Internals;
 
 namespace the_chuck_wiseby.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        private readonly IHttpService<ChuckJoke> httpService;
+        private readonly IHttpService<ChuckJoke, ChuckMessage> httpService;
 
+        public MainViewModel(IHttpService<ChuckJoke, ChuckMessage> httpService)
+        {
+            this.httpService = httpService;
+            RandomCommand = new Command(OnRandomCommand);
+            SearchCommand = new Command(OnSearchCommand);
+            CategoryCommand = new Command(OnCategoryCommand);
+        }
+
+        #region Properties
         private string searchTerm;
-        public string SearchTerm 
-        { 
-            get => searchTerm; 
+        public string SearchTerm
+        {
+            get => searchTerm;
             set
             {
                 if (value != searchTerm)
                 {
                     searchTerm = value;
                 }
+                
                 this.OnPropertyChanged(nameof(SearchTerm));
             }
         }
 
-
         public ObservableCollection<string> Categories { get; set; }
 
         private string selectedCategory;
-
         public string SelectedCategory
         {
             get => selectedCategory;
-            set 
-            { 
-                selectedCategory = value;
-                this.OnPropertyChanged(nameof(SelectedCategory));
+            set
+            {
+                if (value != selectedCategory)
+                {
+                    selectedCategory = value;
+                    this.OnPropertyChanged(nameof(SelectedCategory));
+                }
             }
         }
-
 
         public ICommand RandomCommand { get; }
         public ICommand SearchCommand { get; }
-        public ICommand CategoryCommand { get; }
-
-
-        public MainViewModel(IHttpService<ChuckJoke> httpService)
-        {
-            this.httpService = httpService;
-            RandomCommand = new Command(OnRandomCommand);
-            SearchCommand = new Command(OnSearchCommand);
-            CategoryCommand = new Command(OnCategoryCommand);
-            Initialize();
-        }
+        public ICommand CategoryCommand { get; } 
+        #endregion
 
         public async void Initialize()
         {
-            try
-            {
-                this.Categories = new ObservableCollection<string>(await this.httpService.GetCategories());
-            }
-            catch (System.Exception)
-            {
-
-            }            
-        }
-
-        private void CategorySelected()
-        {
-            OnCategoryCommand();
+            Categories = new ObservableCollection<string>();
+            selectedCategory = "";
+            // FIXME: Maybe better to Create new instance and raise 
+            // ObservableCollection.CollectionChanged?
+            var result = await this.httpService.GetCategories();
+            result.ForEach((item) => 
+            { 
+                Categories.Add(item);
+            });
+            OnPropertyChanged(nameof(Categories));
         }
 
         private async void OnRandomCommand()
@@ -80,14 +79,14 @@ namespace the_chuck_wiseby.ViewModels
 
         private async void OnSearchCommand()
         {
-            MessagingCenter.Send<MainViewModel>(this, Messages.SearchSelected.ToString());
-            await App.Current.MainPage.Navigation.PushAsync(new SearchView());
+            var message = new ChuckMessage() { Category = null, SearchTerm = searchTerm };
+            await App.Current.MainPage.Navigation.PushAsync(new JokeResultView(message));
         }
 
-        private void OnCategoryCommand()
+        private async void OnCategoryCommand()
         {
-            MessagingCenter.Send<MainViewModel>(this, Messages.CategorySelected.ToString());
-            App.Current.MainPage.Navigation.PushAsync(new JokeResultView());
+            var message = new ChuckMessage() { Category = SelectedCategory, SearchTerm = null };
+            await App.Current.MainPage.Navigation.PushAsync(new JokeCategoryView(message));
         }
 
 

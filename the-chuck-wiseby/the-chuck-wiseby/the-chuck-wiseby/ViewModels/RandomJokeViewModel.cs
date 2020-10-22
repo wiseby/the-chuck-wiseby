@@ -8,10 +8,18 @@ namespace the_chuck_wiseby.ViewModels
 {
     public class RandomJokeViewModel : BaseViewModel
     {
-        private IHttpService<ChuckJoke> httpService;
+        private IHttpService<ChuckJoke, ChuckMessage> httpService;
 
+        public RandomJokeViewModel(IHttpService<ChuckJoke, ChuckMessage> httpService)
+        {
+            this.httpService = httpService;
+            BackCommand = new Command(OnBackCommand);
+            NextJokeCommand = new Command(NextJoke);
+            Initialize();
+        }
+
+        #region Properties
         private ChuckJoke joke;
-
         public ChuckJoke Joke
         {
             get => joke;
@@ -20,26 +28,20 @@ namespace the_chuck_wiseby.ViewModels
                 joke = value;
                 this.OnPropertyChanged(nameof(Joke));
             }
-        }
-
+        } 
 
         public ICommand BackCommand { get; }
         public ICommand NextJokeCommand { get; }
-        public RandomJokeViewModel(IHttpService<ChuckJoke> httpService)
-        {
-            this.httpService = httpService;
-            BackCommand = new Command(OnBackCommand);
-            NextJokeCommand = new Command(NextJoke);
-            InitializeMessageCenter();
-        }
+        #endregion
 
-        public void InitializeMessageCenter()
+        public void Initialize()
         {
             MessagingCenter.Subscribe<RandomJokeView>(
                 this,
                 Messages.InitializeRandomView.ToString(),
                 (sender) => NextJoke()
             );
+            NextJoke();
         }
 
         private async void NextJoke()

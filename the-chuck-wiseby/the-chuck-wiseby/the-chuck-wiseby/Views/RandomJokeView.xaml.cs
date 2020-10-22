@@ -13,7 +13,6 @@ namespace the_chuck_wiseby.Views
 
         protected override void OnAppearing()
         {
-            MessagingCenter.Send<RandomJokeView>(this, Messages.InitializeRandomView.ToString());
             base.OnAppearing();
         }
     }

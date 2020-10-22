@@ -1,26 +1,44 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:utility="clr-namespace:the_chuck_wiseby.Utility;"
-             utility:ViewModelLocator.AutoWireViewModel="True"
              x:Class="the_chuck_wiseby.Views.MainView">
 
-    <StackLayout Padding="20">
+    <StackLayout Padding="20"
+                 HorizontalOptions="Center">
         <Label Text="Get a Chuck Joke!!!"
                HorizontalOptions="CenterAndExpand"
                FontSize="40"
                Padding="10"/>
 
         <Entry Placeholder="Search..."
-               Text="{Binding SearchTerm}"/>
+               Text="{Binding SearchTerm}"
+               Margin="10"
+               HorizontalOptions="CenterAndExpand"
+               WidthRequest="200"/>
         
         <Button Text="Search"
-                Command="{Binding SearchCommand}"/>
-        
-        <Button Text="Random Joke"
-                Command="{Binding RandomCommand}"/>
+                Command="{Binding SearchCommand}"
+                WidthRequest="200"/>
 
-        <ListView ItemsSource="{Binding Categories}">
+        <Button Text="Random Joke"
+                Command="{Binding RandomCommand}"
+                WidthRequest="200"/>
+
+        <ListView ItemsSource="{Binding Categories}"
+                  ItemSelected="ListView_ItemSelected"
+                  SelectedItem="{Binding SelectedCategory}"
+                  Margin="20"
+                  WidthRequest="300">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Label Text="{Binding }" 
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               FontSize="20"/>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
         </ListView>
         
     </StackLayout>

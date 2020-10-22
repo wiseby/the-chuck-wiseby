@@ -8,10 +8,11 @@ using the_chuck_wiseby.Models;
 
 namespace the_chuck_wiseby.Services
 {
-    public class ChuckJokeService : IHttpService<ChuckJoke>
+    public class ChuckJokeService : IHttpService<ChuckJoke, ChuckMessage>
     {
         private HttpClient client;
         private readonly string baseUrl = "https://api.chucknorris.io/jokes/";
+
         public ChuckJokeService()
         {
             // This should be a dependency injected in the constructor!!!
@@ -39,21 +40,61 @@ namespace the_chuck_wiseby.Services
             }
         }
 
-        public Task<ChuckJoke> GetByCategory(string category)
+        public async Task<ChuckJoke> GetJoke(ChuckMessage message)
         {
-            throw new NotImplementedException();
+            if (message.Category != null)
+            {
+                return await GetByCategory(message.Category);
+            }
+            else
+            {
+                return await GetRandom();
+            }
         }
 
-        public Task<ChuckJoke> GetBySearch(string searchTerm)
+        public async Task<ChuckJoke> GetByCategory(string category)
         {
-            var builder = new UriBuilder(baseUrl);
-            builder.Port = -1;
-            var query = HttpUtility.ParseQueryString(builder.Query);
-            query["search"] = searchTerm;
-            builder.Query = query.ToString();
-            string url = builder.ToString();
+            var request = BuildUriWithQuery(
+                new Dictionary<string,string>() {{"category", category}},
+                "random"
+                );
+            
+            var response = await this.client.GetAsync(request);
 
-            throw new NotImplementedException();
+            if(response.IsSuccessStatusCode)
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+
+                var joke = JsonConvert.DeserializeObject<ChuckJoke>(jsonResponse);
+
+                return joke;
+            }
+
+            else { return null; }
+        }
+
+        public async Task<SearchResponse> GetBySearch(string searchTerm)
+        {
+            var request = BuildUriWithQuery(
+                new Dictionary<string,string>() {{"query", searchTerm}},
+                "search"
+                );
+            
+            var response = await this.client.GetAsync(request);
+
+            if(response.IsSuccessStatusCode)
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+
+                var jokes = JsonConvert.DeserializeObject<SearchResponse>(jsonResponse);
+
+                return jokes;
+            }
+
+            else
+            {
+                return new SearchResponse() { Jokes = new List<ChuckJoke>(), Total = 0 };
+            }
         }
 
         public async Task<ChuckJoke> GetRandom()
@@ -73,6 +114,19 @@ namespace the_chuck_wiseby.Services
             {
                 throw new NullReferenceException($"sorry api returned status: {response.StatusCode}");
             }
+        }
+
+        private Uri BuildUriWithQuery(Dictionary<string, string> parameters, string uriResource)
+        {
+            var builder = new UriBuilder($"{baseUrl}{uriResource}");
+            
+            var query = HttpUtility.ParseQueryString(builder.Query);
+            foreach (var kvp in parameters)
+            {
+                query[kvp.Key] = kvp.Value;
+            }
+            builder.Query = query.ToString();
+            return builder.Uri;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using System;
-using System.Net.Http;
 using the_chuck_wiseby.Models;
 using the_chuck_wiseby.Services;
 using the_chuck_wiseby.ViewModels;
@@ -17,12 +16,12 @@ namespace the_chuck_wiseby.Containers
 
             // ViewModels:
             builder.RegisterType<MainViewModel>();
-            builder.RegisterType<SearchViewModel>();
             builder.RegisterType<JokeResultViewModel>();
             builder.RegisterType<RandomJokeViewModel>();
+            builder.RegisterType<JokeCategoryViewModel>();
 
             // Services:
-            builder.RegisterType<ChuckJokeService>().As<IHttpService<ChuckJoke>>();
+            builder.RegisterType<ChuckJokeService>().As<IHttpService<ChuckJoke, ChuckMessage>>();
             builder.RegisterType<NavigationService>().As<INavigationService>();
 
             Container = builder.Build();

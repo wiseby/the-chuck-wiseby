@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="the_chuck_wiseby.Views.JokeCategoryView">
+    
+    <StackLayout>
+        
+        <Label Text="{Binding ChuckMessage.Category, StringFormat='Random joke from category {0}'}"
+               FontSize="40"
+               HorizontalOptions="Center"
+               Padding="20"/>
+        <Label Text="{Binding Joke.Value}"
+               FontSize="30"
+               HorizontalOptions="Center"
+               Padding="20"/>
+        <Button Text="One More!"
+                Command="{Binding NextJokeCommand}"/>
+        
+    </StackLayout>
+    
+</ContentPage>
