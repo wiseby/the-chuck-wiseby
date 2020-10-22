@@ -22,6 +22,7 @@ namespace the_chuck_wiseby.Views
         {
             base.OnAppearing();
             viewModel.Initialize();
+            if (viewModel.ChuckMessage.SearchTerm == null) { viewModel.ChuckMessage.SearchTerm = string.Empty; }
             GetBySearch();
         }
 

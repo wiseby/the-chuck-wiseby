@@ -15,7 +15,7 @@ namespace the_chuck_wiseby.ViewModels
             this.httpService = httpService;
             BackCommand = new Command(OnBackCommand);
             NextJokeCommand = new Command(NextJoke);
-            InitializeMessageCenter();
+            Initialize();
         }
 
         #region Properties
@@ -34,13 +34,14 @@ namespace the_chuck_wiseby.ViewModels
         public ICommand NextJokeCommand { get; }
         #endregion
 
-        public void InitializeMessageCenter()
+        public void Initialize()
         {
             MessagingCenter.Subscribe<RandomJokeView>(
                 this,
                 Messages.InitializeRandomView.ToString(),
                 (sender) => NextJoke()
             );
+            NextJoke();
         }
 
         private async void NextJoke()
