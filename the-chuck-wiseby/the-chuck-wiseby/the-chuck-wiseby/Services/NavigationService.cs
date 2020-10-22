@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using the_chuck_wiseby.Views;
 using Xamarin.Forms;
 
 namespace the_chuck_wiseby.Services
 {
-    class NavigationService : INavigationService
+    public class NavigationService : INavigationService
     {
         private INavigation navigation;
         public NavigationService()

@@ -2,11 +2,45 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="the_chuck_wiseby.Views.JokeResultView">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
+
+    <StackLayout >
+        
+        <Entry Placeholder="Search..."
+               Text="{Binding ChuckMessage.SearchTerm}"
+               Margin="10"
+               HorizontalOptions="CenterAndExpand"
+               WidthRequest="200"/>
+        
+        <Button Text="Search"
+                Clicked="Button_Clicked"/>
+
+        <Label Text="{Binding NumberOfMatches, StringFormat='Your search matched {0} jokes!' }"
+               FontSize="20"
+               HorizontalOptions="Center"/>
+
+        <ScrollView>
+
+            <CarouselView ItemsSource="{Binding Jokes}">
+                <CarouselView.ItemTemplate>
+                    <DataTemplate>
+
+                        <StackLayout>
+                            <Label Text="{Binding Value}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   FontSize="30"
+                                   Padding="50"/>
+                            <Button Text="Add To Favourites"
+                                    HeightRequest="100"
+                                    Command="{Binding AddToFavouriteCommand}" />
+                        </StackLayout>
+
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+
+        </ScrollView>
+
+    </StackLayout>
+
 </ContentPage>
