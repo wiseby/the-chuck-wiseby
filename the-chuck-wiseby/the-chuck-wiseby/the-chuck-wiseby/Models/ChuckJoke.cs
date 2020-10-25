@@ -29,5 +29,7 @@ namespace the_chuck_wiseby.Models
 
         [JsonProperty("value")]
         public string Value { get; set; }
+        [Ignore]
+        public bool IsFavourite { get; set; } = false;
     }
 }

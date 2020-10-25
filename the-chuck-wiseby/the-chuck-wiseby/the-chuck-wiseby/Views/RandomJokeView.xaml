@@ -18,6 +18,9 @@
                     Padding="20"
                     Margin="20"/>
 
+            <Label Text="One of your favourites!" 
+                   IsVisible="{Binding Joke.IsFavourite}"/>
+
             <Label Text="{Binding Joke.Value}"
                    HorizontalOptions="CenterAndExpand"
                    FontSize="20"

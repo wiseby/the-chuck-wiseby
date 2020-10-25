@@ -52,6 +52,8 @@ namespace the_chuck_wiseby.ViewModels
             NextJoke();
         }
 
+        public bool IsFavourite => favouriteService.IsFavourite(Joke);
+
         private async void NextJoke()
         {
             Joke = await httpService.GetRandom();

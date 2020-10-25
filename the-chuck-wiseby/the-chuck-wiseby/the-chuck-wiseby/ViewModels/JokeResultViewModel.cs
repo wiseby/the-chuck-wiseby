@@ -4,7 +4,6 @@ using System.Windows.Input;
 using the_chuck_wiseby.Models;
 using the_chuck_wiseby.Services;
 using Xamarin.Forms;
-using System.Linq;
 using Xamarin.Forms.Internals;
 
 namespace the_chuck_wiseby.ViewModels
@@ -12,16 +11,21 @@ namespace the_chuck_wiseby.ViewModels
     public class JokeResultViewModel : BaseViewModel
     {
         private IHttpService<ChuckJoke, ChuckMessage> httpService;
+        private IFavouriteService<ChuckJoke> favouriteService;
 
         public JokeResultViewModel(
             IHttpService<ChuckJoke, ChuckMessage> httpService,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            IFavouriteService<ChuckJoke> favouriteService)
                 : base(navigationService)
         {
             this.httpService = httpService;
+            this.favouriteService = favouriteService;
 
             SearchCommand = new Command(OnSearchCommand);
             GoBackCommand = new Command(OnGoBackCommand);
+            FavouriteCommand = new Command<ChuckJoke>(OnFavouriteCommand);
+
         }
 
         #region Properties
@@ -67,6 +71,7 @@ namespace the_chuck_wiseby.ViewModels
 
         public ICommand SearchCommand { get; }
         public ICommand GoBackCommand { get; } 
+        public ICommand FavouriteCommand { get; }
         #endregion
 
         public void Initialize()
@@ -74,18 +79,17 @@ namespace the_chuck_wiseby.ViewModels
             Jokes = new ObservableCollection<ChuckJoke>();
         }
 
-        private async Task<ChuckJoke> GetJoke()
-        {
-            return this.ActiveJoke = await this.httpService.GetJoke(ChuckMessage);
-        }
-
         private async void GetJokes()
         {
             var result = await this.httpService.GetBySearch(ChuckMessage.SearchTerm);
-            
+
             Jokes.Clear();
 
-            result.Jokes.ForEach((joke) => Jokes.Add(joke));
+            result.Jokes.ForEach((joke) =>
+            {
+                joke.IsFavourite = favouriteService.IsFavourite(joke);
+                Jokes.Add(joke);
+            });
             
             NumberOfMatches = result.Total;
 
@@ -101,6 +105,12 @@ namespace the_chuck_wiseby.ViewModels
         private async void OnGoBackCommand()
         {
             await App.Current.MainPage.Navigation.PopAsync();
+        }
+
+        private void OnFavouriteCommand(ChuckJoke joke)
+        {
+            favouriteService.Save(joke);
+            OnPropertyChanged(nameof(Jokes));
         }
     }
 }

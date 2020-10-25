@@ -10,9 +10,6 @@
                FontSize="Header"
                Padding="20"/>
 
-        <Button Text="Load"
-                Command="{Binding LoadCommand}"/>
-        
         <ListView ItemsSource="{Binding Favourites}"
                   Margin="20"
                   HasUnevenRows="True">
@@ -20,15 +17,15 @@
                 <DataTemplate>
                     <ViewCell>
                         <StackLayout>
-                            <!--<Label Text="{Binding Categories, StringFormat='Included in categories: {0}'}"
-                                   FontSize="10"
-                                   HorizontalOptions="Start"/>-->
+                            
                             <Label Text="{Binding Value}"
                                    FontSize="30"
                                    HorizontalOptions="Start"/>
+                            
                             <Button Text="Remove"
                                     Command="{Binding Path=BindingContext.RemoveCommand, Source={x:Reference root}}"
                                     CommandParameter="{Binding .}"/>
+                            
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

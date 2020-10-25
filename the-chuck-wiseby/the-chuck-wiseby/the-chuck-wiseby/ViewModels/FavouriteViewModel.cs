@@ -20,7 +20,6 @@ namespace the_chuck_wiseby.ViewModels
         {
             this.favouriteService = favouriteService;
             RemoveCommand = new Command<ChuckJoke>(Remove);
-            LoadCommand = new Command(OnLoadCommand);
         }
 
         public bool HasData()
@@ -48,17 +47,11 @@ namespace the_chuck_wiseby.ViewModels
             } 
         }
         public ICommand RemoveCommand { get; }
-        public ICommand LoadCommand { get; }
 
         private void Remove(ChuckJoke joke)
         {
             favouriteService.Delete(joke);
             OnPropertyChanged(nameof(Favourites));
-        }
-
-        private void OnLoadCommand()
-        {
-
         }
     }
 }
