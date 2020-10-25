@@ -1,39 +1,45 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using the_chuck_wiseby.Models;
+using the_chuck_wiseby.Views;
+using the_chuck_wiseby.Utility;
 using Xamarin.Forms;
 
 namespace the_chuck_wiseby.Services
 {
     public class NavigationService : INavigationService
     {
-        private INavigation navigation;
-        public NavigationService()
-        {
-            this.navigation = App.Current.MainPage.Navigation;
-        }
+        private Page mainPage { get { return Application.Current.MainPage; } }
+
         public async Task GoBack()
         {
-            await navigation.PopAsync();
+            await mainPage.Navigation.PopAsync();
         }
 
-        public Task NavigateToCategory()
+        public async Task NavigateToCategory(object state)
         {
-            throw new NotImplementedException();
+            var message = state.CastToChuckMessage();
+            await mainPage.Navigation.PushAsync(new JokeCategoryView(message));
         }
 
-        public Task NavigateToMain()
+        public async Task NavigateToFavourites()
         {
-            throw new NotImplementedException();
+            await mainPage.Navigation.PushAsync(new FavouriteView());
         }
 
-        public Task NavigateToRandom()
+        public async Task NavigateToMain()
         {
-            throw new NotImplementedException();
+            await mainPage.Navigation.PushAsync(new MainView());
         }
 
-        public Task NavigateToSearch()
+        public async Task NavigateToRandom()
         {
-            throw new NotImplementedException();
+            await mainPage.Navigation.PushAsync(new RandomJokeView());
+        }
+
+        public async Task NavigateToSearch(object state)
+        {
+            var message = state.CastToChuckMessage();
+            await mainPage.Navigation.PushAsync(new JokeResultView(message));
         }
     }
 }

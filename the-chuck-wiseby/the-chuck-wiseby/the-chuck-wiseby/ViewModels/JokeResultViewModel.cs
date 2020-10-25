@@ -13,7 +13,10 @@ namespace the_chuck_wiseby.ViewModels
     {
         private IHttpService<ChuckJoke, ChuckMessage> httpService;
 
-        public JokeResultViewModel(IHttpService<ChuckJoke, ChuckMessage> httpService)
+        public JokeResultViewModel(
+            IHttpService<ChuckJoke, ChuckMessage> httpService,
+            INavigationService navigationService)
+                : base(navigationService)
         {
             this.httpService = httpService;
 

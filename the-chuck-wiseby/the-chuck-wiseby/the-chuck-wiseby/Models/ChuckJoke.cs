@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using SQLite;
 
 namespace the_chuck_wiseby.Models
 {
     public class ChuckJoke
     {
+        [Ignore]
         [JsonProperty("categories")]
         public IEnumerable<string> Categories { get; set; }
 
@@ -15,6 +17,7 @@ namespace the_chuck_wiseby.Models
         [JsonProperty("icon_url")]
         public string IconUrl { get; set; }
 
+        [PrimaryKey]
         [JsonProperty("id")]
         public string Id { get; set; }
 

@@ -24,6 +24,10 @@
                 Command="{Binding RandomCommand}"
                 WidthRequest="200"/>
 
+        <Button Text="Favourites"
+                Command="{Binding FavouriteCommand}"
+                WidthRequest="200"/>
+
         <ListView ItemsSource="{Binding Categories}"
                   ItemSelected="ListView_ItemSelected"
                   SelectedItem="{Binding SelectedCategory}"

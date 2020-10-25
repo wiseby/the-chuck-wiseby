@@ -4,10 +4,11 @@ namespace the_chuck_wiseby.Services
 {
     public interface INavigationService
     {
-        Task NavigateToSearch();
+        Task NavigateToSearch(object state);
         Task NavigateToMain();
-        Task NavigateToCategory();
+        Task NavigateToCategory(object state);
         Task NavigateToRandom();
+        Task NavigateToFavourites();
         Task GoBack();
     }
 }

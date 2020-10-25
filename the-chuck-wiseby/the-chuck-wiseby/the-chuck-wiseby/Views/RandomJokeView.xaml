@@ -10,6 +10,13 @@
                    FontSize="40"
                    HorizontalOptions="CenterAndExpand"
                    Padding="20"/>
+            
+            <Button Text="Save To Favourites"
+                    Command="{Binding FavouriteCommand}"
+                    CommandParameter="{Binding Joke}"
+                    HorizontalOptions="Start"
+                    Padding="20"
+                    Margin="20"/>
 
             <Label Text="{Binding Joke.Value}"
                    HorizontalOptions="CenterAndExpand"

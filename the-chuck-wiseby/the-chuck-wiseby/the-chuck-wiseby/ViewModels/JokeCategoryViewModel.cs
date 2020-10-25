@@ -9,7 +9,10 @@ namespace the_chuck_wiseby.ViewModels
     {
         private readonly IHttpService<ChuckJoke, ChuckMessage> httpService;
 
-        public JokeCategoryViewModel(IHttpService<ChuckJoke, ChuckMessage> httpService)
+        public JokeCategoryViewModel(
+            IHttpService<ChuckJoke, ChuckMessage> httpService,
+            INavigationService navigationService)
+                : base(navigationService)
         {
             this.httpService = httpService;
             NextJokeCommand = new Command(GetCategoryJoke);
@@ -40,7 +43,7 @@ namespace the_chuck_wiseby.ViewModels
             }
         }
 
-        public ICommand NextJokeCommand { get; } 
+        public ICommand NextJokeCommand { get; }
         #endregion
 
         public async void GetCategoryJoke()
