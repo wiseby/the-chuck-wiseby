@@ -8,14 +8,17 @@ namespace the_chuck_wiseby.ViewModels
     class JokeCategoryViewModel : BaseViewModel
     {
         private readonly IHttpService<ChuckJoke, ChuckMessage> httpService;
+        private readonly IFavouriteService<ChuckJoke> favouriteService;
 
         public JokeCategoryViewModel(
             IHttpService<ChuckJoke, ChuckMessage> httpService,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            IFavouriteService<ChuckJoke> favouriteService)
                 : base(navigationService)
         {
             this.httpService = httpService;
-            NextJokeCommand = new Command(GetCategoryJoke);
+            this.favouriteService = favouriteService;
+            NextJokeCommand = new Command(GetCategoryJoke); 
         }
 
         #region Properties
@@ -44,6 +47,7 @@ namespace the_chuck_wiseby.ViewModels
         }
 
         public ICommand NextJokeCommand { get; }
+        public ICommand FavouriteCommand => favouriteService.FavouriteCommand;
         #endregion
 
         public async void GetCategoryJoke()

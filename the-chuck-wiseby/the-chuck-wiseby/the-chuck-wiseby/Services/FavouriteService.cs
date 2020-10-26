@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using the_chuck_wiseby.Models;
+using Xamarin.Forms;
 
 namespace the_chuck_wiseby.Services
 {
@@ -15,7 +17,10 @@ namespace the_chuck_wiseby.Services
         {
             this.dataStore = dataStore;
             favourites = new List<ChuckJoke>();
+            FavouriteCommand = new Command<ChuckJoke>(Save);
         }
+
+        public ICommand FavouriteCommand { get; }
 
         public async void Initialize()
         {

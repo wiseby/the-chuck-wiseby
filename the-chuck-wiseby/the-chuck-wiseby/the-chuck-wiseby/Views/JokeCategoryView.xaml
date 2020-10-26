@@ -9,10 +9,32 @@
                FontSize="40"
                HorizontalOptions="Center"
                Padding="20"/>
+
+        <Button Text="Add To Favourites"
+                HeightRequest="100"
+                Command="{Binding FavouriteCommand}" 
+                CommandParameter="{Binding Joke}"/>
+
+        <Frame IsVisible="{Binding Joke.IsFavourite}"
+               BorderColor="Gray"
+               CornerRadius="10"
+               HorizontalOptions="Center">
+
+            <StackLayout>
+                <Label Text="One of your favourites!" 
+                       FontSize="20"/>
+
+                <Image Source="star.jpg" />
+
+            </StackLayout>
+
+        </Frame>
+
         <Label Text="{Binding Joke.Value}"
                FontSize="30"
                HorizontalOptions="Center"
                Padding="20"/>
+        
         <Button Text="One More!"
                 Command="{Binding NextJokeCommand}"/>
         

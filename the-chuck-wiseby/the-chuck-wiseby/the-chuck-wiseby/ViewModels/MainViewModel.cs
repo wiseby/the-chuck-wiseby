@@ -91,7 +91,7 @@ namespace the_chuck_wiseby.ViewModels
         private async void OnCategoryCommand()
         {
             var message = new ChuckMessage() { Category = SelectedCategory, SearchTerm = null };
-            await this.navigationService.NavigateToSearch(message);
+            await this.navigationService.NavigateToCategory(message);
         }
 
         private async void OnFavouriteCommand()

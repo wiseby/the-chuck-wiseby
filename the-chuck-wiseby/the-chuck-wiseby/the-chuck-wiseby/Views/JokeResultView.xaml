@@ -25,8 +25,7 @@
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
 
-                        <StackLayout HorizontalOptions="Center"
-                                     >
+                        <StackLayout HorizontalOptions="Center">
                             <Frame IsVisible="{Binding IsFavourite}"
                                    BorderColor="Gray"
                                    CornerRadius="10"

@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using the_chuck_wiseby.Models;
 using the_chuck_wiseby.Views;
 using the_chuck_wiseby.Utility;
 using Xamarin.Forms;

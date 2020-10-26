@@ -7,7 +7,7 @@
     <StackLayout x:Name="root">
         <Label Text="Favourites" 
                HorizontalOptions="Center"
-               FontSize="Header"
+               FontSize="40"
                Padding="20"/>
 
         <ListView ItemsSource="{Binding Favourites}"

@@ -36,7 +36,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Label Text="{Binding }" 
+                        <Label Text="{Binding .}" 
                                HorizontalOptions="Center"
                                VerticalOptions="Center"
                                FontSize="20"/>
