@@ -9,12 +9,19 @@ namespace the_chuck_wiseby.ViewModels
     public class RandomJokeViewModel : BaseViewModel
     {
         private IHttpService<ChuckJoke, ChuckMessage> httpService;
+        private IFavouriteService<ChuckJoke> favouriteService;
 
-        public RandomJokeViewModel(IHttpService<ChuckJoke, ChuckMessage> httpService)
+        public RandomJokeViewModel(
+            IHttpService<ChuckJoke, ChuckMessage> httpService, 
+            INavigationService navigationService,
+            IFavouriteService<ChuckJoke> favouriteService)
+                : base(navigationService)
         {
             this.httpService = httpService;
+            this.favouriteService = favouriteService;
             BackCommand = new Command(OnBackCommand);
             NextJokeCommand = new Command(NextJoke);
+            FavouriteCommand = new Command<ChuckJoke>(OnFavouriteCommand);
             Initialize();
         }
 
@@ -32,6 +39,7 @@ namespace the_chuck_wiseby.ViewModels
 
         public ICommand BackCommand { get; }
         public ICommand NextJokeCommand { get; }
+        public ICommand FavouriteCommand { get; }
         #endregion
 
         public void Initialize()
@@ -44,9 +52,23 @@ namespace the_chuck_wiseby.ViewModels
             NextJoke();
         }
 
+        public bool IsFavourite => favouriteService.IsFavourite(Joke);
+
         private async void NextJoke()
         {
             Joke = await httpService.GetRandom();
+        }
+
+        private void OnFavouriteCommand(ChuckJoke joke)
+        {
+            if (favouriteService.IsFavourite(joke))
+            {
+                favouriteService.Delete(joke);
+            }
+            else
+            {
+                favouriteService.Save(joke);
+            }
         }
 
         private async void OnBackCommand()

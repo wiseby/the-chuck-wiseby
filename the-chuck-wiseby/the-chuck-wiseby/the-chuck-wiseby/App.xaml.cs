@@ -1,4 +1,6 @@
 ﻿using the_chuck_wiseby.Containers;
+using the_chuck_wiseby.Models;
+using the_chuck_wiseby.Services;
 using the_chuck_wiseby.Views;
 using Xamarin.Forms;
 
@@ -14,6 +16,8 @@ namespace the_chuck_wiseby
 
     public partial class App : Application
     {
+        public IDataStore<ChuckJoke> dataStore;
+
         public App()
         {
             InitializeComponent();
@@ -26,6 +30,9 @@ namespace the_chuck_wiseby
         private void InitializeApp()
         {
             AppContainer.RegisterDependencies();
+            dataStore = AppContainer.Resolve<IDataStore<ChuckJoke>>();
+            dataStore.Initialize("ChuckJokes.db3");
+            AppContainer.Resolve<IFavouriteService<ChuckJoke>>().Initialize();
         }
 
         protected override void OnStart()

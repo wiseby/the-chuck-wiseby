@@ -6,10 +6,21 @@
              x:Class="the_chuck_wiseby.Views.RandomJokeView">
     <ContentPage.Content>
         <StackLayout>
+            
             <Label Text="Random Chuck Joke"
                    FontSize="40"
                    HorizontalOptions="CenterAndExpand"
                    Padding="20"/>
+            
+            <Button Text="Save To Favourites"
+                    Command="{Binding FavouriteCommand}"
+                    CommandParameter="{Binding Joke}"
+                    HorizontalOptions="Start"
+                    Padding="20"
+                    Margin="20"/>
+
+            <Label Text="One of your favourites!" 
+                   IsVisible="{Binding Joke.IsFavourite}"/>
 
             <Label Text="{Binding Joke.Value}"
                    HorizontalOptions="CenterAndExpand"
@@ -21,11 +32,13 @@
                     HorizontalOptions="Center"
                     Padding="20"
                     Margin="20"/>
+            
             <Button Text="Go Back"
                     Command="{Binding BackCommand}"
                     HorizontalOptions="Center"
                     Padding="20"
                     Margin="20"/>
+            
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

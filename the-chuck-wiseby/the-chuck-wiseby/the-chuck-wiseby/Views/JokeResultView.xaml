@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="the_chuck_wiseby.Views.JokeResultView">
 
-    <StackLayout >
+    <StackLayout x:Name="root">
         
         <Entry Placeholder="Search..."
                Text="{Binding ChuckMessage.SearchTerm}"
@@ -16,7 +16,8 @@
 
         <Label Text="{Binding NumberOfMatches, StringFormat='Your search matched {0} jokes!' }"
                FontSize="20"
-               HorizontalOptions="Center"/>
+               HorizontalOptions="Center"
+               Padding="20"/>
 
         <ScrollView>
 
@@ -24,15 +25,34 @@
                 <CarouselView.ItemTemplate>
                     <DataTemplate>
 
-                        <StackLayout>
+                        <StackLayout HorizontalOptions="Center">
+                            <Frame IsVisible="{Binding IsFavourite}"
+                                   BorderColor="Gray"
+                                   CornerRadius="10"
+                                   HorizontalOptions="Center">
+
+                                <StackLayout>
+                                    <Label Text="One of your favourites!" 
+                                           FontSize="20"/>
+
+                                    <Image Source="star.jpg" />
+
+                                </StackLayout>
+
+
+                            </Frame>
+
                             <Label Text="{Binding Value}"
                                    HorizontalOptions="Center"
                                    VerticalOptions="Center"
                                    FontSize="30"
                                    Padding="50"/>
+                            
                             <Button Text="Add To Favourites"
                                     HeightRequest="100"
-                                    Command="{Binding AddToFavouriteCommand}" />
+                                    Command="{Binding Path=BindingContext.FavouriteCommand, Source={x:Reference root}}" 
+                                    CommandParameter="{Binding .}"/>
+                            
                         </StackLayout>
 
                     </DataTemplate>

@@ -2,7 +2,6 @@
 using System.Windows.Input;
 using the_chuck_wiseby.Models;
 using the_chuck_wiseby.Services;
-using the_chuck_wiseby.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Internals;
 
@@ -12,12 +11,16 @@ namespace the_chuck_wiseby.ViewModels
     {
         private readonly IHttpService<ChuckJoke, ChuckMessage> httpService;
 
-        public MainViewModel(IHttpService<ChuckJoke, ChuckMessage> httpService)
+        public MainViewModel(
+            IHttpService<ChuckJoke, ChuckMessage> httpService,
+            INavigationService navigationService)
+                : base(navigationService)
         {
             this.httpService = httpService;
             RandomCommand = new Command(OnRandomCommand);
             SearchCommand = new Command(OnSearchCommand);
             CategoryCommand = new Command(OnCategoryCommand);
+            FavouriteCommand = new Command(OnFavouriteCommand);
         }
 
         #region Properties
@@ -54,7 +57,9 @@ namespace the_chuck_wiseby.ViewModels
 
         public ICommand RandomCommand { get; }
         public ICommand SearchCommand { get; }
-        public ICommand CategoryCommand { get; } 
+        public ICommand CategoryCommand { get; }
+        public ICommand FavouriteCommand { get; }
+
         #endregion
 
         public async void Initialize()
@@ -74,21 +79,24 @@ namespace the_chuck_wiseby.ViewModels
         private async void OnRandomCommand()
         {
             MessagingCenter.Send<MainViewModel>(this, Messages.RandomSelected.ToString());
-            await App.Current.MainPage.Navigation.PushAsync(new RandomJokeView());
+            await this.navigationService.NavigateToRandom();
         }
 
         private async void OnSearchCommand()
         {
             var message = new ChuckMessage() { Category = null, SearchTerm = searchTerm };
-            await App.Current.MainPage.Navigation.PushAsync(new JokeResultView(message));
+            await this.navigationService.NavigateToSearch(message);
         }
 
         private async void OnCategoryCommand()
         {
             var message = new ChuckMessage() { Category = SelectedCategory, SearchTerm = null };
-            await App.Current.MainPage.Navigation.PushAsync(new JokeCategoryView(message));
+            await this.navigationService.NavigateToCategory(message);
         }
 
-
+        private async void OnFavouriteCommand()
+        {
+            await navigationService.NavigateToFavourites();
+        }
     }
 }
